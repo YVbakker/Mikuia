@@ -105,7 +105,7 @@ Mikuia.Settings.read ->
 			iced.catchExceptions()
 
 	if isWeb
-		Mikuia.Web = require './web/web.iced'
+		Mikuia.Web = require './web/react.iced'
 
 		# Stock Leaderboards
 		viewerLeaderboard = new Mikuia.Models.Leaderboard 'viewers'
