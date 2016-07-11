@@ -121,16 +121,16 @@ app.use passport.session()
 
 # fs.mkdirs 'web/public/img/avatars'
 
-# routeList =
-# 	community: 'web/routes/community'
-# 	dashboard: 'web/routes/dashboard'
+routeList =
+	community: 'web/routes/community'
+	dashboard: 'web/routes/dashboard'
 
-# for routeName, routeDir of routeList
-# 	routes[routeName] = {}
-# 	fileList = fs.readdirSync routeDir
-# 	for file in fileList
-# 		filePath = path.resolve routeDir + '/' + file
-# 		routes[routeName][file.replace('.iced', '')] = require filePath
+for routeName, routeDir of routeList
+	routes[routeName] = {}
+	fileList = fs.readdirSync routeDir
+	for file in fileList
+		filePath = path.resolve routeDir + '/' + file
+		routes[routeName][file.replace('.iced', '')] = require filePath
 
 # routes.login = require './routes/login'
 
@@ -150,6 +150,9 @@ app.use passport.session()
 # app.post '/dashboard/plugins/toggle', checkAuth, routes.dashboard.plugins.pluginToggle
 # app.post '/dashboard/settings/save/:name', checkAuth, routes.dashboard.settings.save
 # app.post '/dashboard/settings/toggle', checkAuth, routes.dashboard.settings.toggle
+
+app.get '/api/stream/:username', routes.community.stream
+app.get '/api/streams', routes.community.streams
 
 # app.get '/', routes.community.index
 # app.get '/about', routes.community.about
