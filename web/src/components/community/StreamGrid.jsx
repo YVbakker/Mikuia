@@ -33,7 +33,7 @@ var StreamGrid = React.createClass({
 
 	poll: function() {
 		var self = this
-		this.setState({
+		self.setState({
 			loading: true
 		})
 		$.get(this.props.source + '?limit=' + this.state.limit + '&offset=' + this.state.offset).success(function(data) {

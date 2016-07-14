@@ -151,8 +151,12 @@ for routeName, routeDir of routeList
 # app.post '/dashboard/settings/save/:name', checkAuth, routes.dashboard.settings.save
 # app.post '/dashboard/settings/toggle', checkAuth, routes.dashboard.settings.toggle
 
+app.get '/api/levels', routes.community.levels
+
 app.get '/api/stream/:username', routes.community.stream
 app.get '/api/streams', routes.community.streams
+
+app.get '/api/user/:username', routes.community.user
 
 # app.get '/', routes.community.index
 # app.get '/about', routes.community.about

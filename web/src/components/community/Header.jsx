@@ -8,12 +8,12 @@ var Header = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<Navbar bsClass="mikuia" className={classNames({'mikuia-navbar': true, 'mikuia-navbar-extended': this.props.pathName == '/home'})}>
+				<Navbar bsClass="mikuia" className={classNames({'mikuia-navbar': true, 'mikuia-navbar-splash': this.props.pathName == '/home'})}>
 					<div className="mikuia-navbar-content">
 						<LinkContainer to="/home">
-							<div>
-								<img src="/img/icon.png" width="50" height="50" />
-							</div>
+							<a>
+								<img className="mikuia-navbar-icon" src="/img/icon.png" width="50" height="50" />
+							</a>
 						</LinkContainer>
 
 						<div className="mikuia-navbar-lines-left">
@@ -49,6 +49,7 @@ var Header = React.createClass({
 						
 					</div>
 				</Navbar>
+				<br />
 				<br />
 			</div>
 		)

@@ -4,7 +4,7 @@ import {Button, Col, Grid, Media, Row} from 'react-bootstrap'
 
 import StreamGrid from '../components/community/StreamGrid'
 
-var Home = React.createClass({
+var Streams = React.createClass({
 
 	render: function() {
 		return (
@@ -20,4 +20,4 @@ var Home = React.createClass({
 
 })
 
-export default Home
+export default Streams
