@@ -9,7 +9,7 @@ var CardBlock = React.createClass({
 
 	render: function() {
 		return (
-			<div className={classNames({"mikuia-card-block": true, "align-right": this.props.alignRight})} style={{flexBasis: this.props.flexBasis + 'px'}}>
+			<div className={classNames({"mikuia-card-block": true, "align-right": this.props.alignRight, "mikuia-card-ranking-block": this.props.ranking})} style={{flexBasis: this.props.flexBasis + 'px'}}>
 				<If condition={this.props.title}>
 					<h6 className="text-muted">{this.props.title}</h6>
 					<h3>

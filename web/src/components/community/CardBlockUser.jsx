@@ -39,16 +39,16 @@ var CardBlockUser = React.createClass({
 	render: function() {
 		return (
 			<div className="mikuia-card-user">
-				<div className="mikuia-card-user-avatar">
-					<LinkContainer to={"/levels/" + this.props.username}>
+				<LinkContainer to={(this.props.link ? this.props.link : '/user/' + this.props.username)}>
+					<div className="mikuia-card-user-avatar">
 						<img src={this.state.user.logo} width="32" height="32" />
-					</LinkContainer> 
-				</div>
-				<div className="mikuia-card-user-name">
-					<LinkContainer to={"/levels/" + this.props.username}>
-						<h4><a>{this.state.user.displayName} Level</a></h4>
-					</LinkContainer>
-				</div>
+					</div>
+				</LinkContainer>
+				<LinkContainer to={(this.props.link ? this.props.link : '/user/' + this.props.username)}>
+					<div className="mikuia-card-user-name">
+						<h4><a>{this.state.user.displayName}{this.props.postfix}</a></h4>
+					</div>
+				</LinkContainer>
 			</div>
 		)
 	}

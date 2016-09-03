@@ -1,6 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router'
-import {Button, Col, Grid, Media, Row} from 'react-bootstrap'
+import {Col, Grid, Row} from 'react-bootstrap'
 
 import StreamGrid from '../components/community/StreamGrid'
 
@@ -10,6 +9,11 @@ var Streams = React.createClass({
 		return (
 			<div>
 				<Grid>
+					<Row>
+						<Col md={12}>
+							<h1 className="mikuia-page-header-text">Streams</h1>
+						</Col>
+					</Row>
 					<Row>
 						<StreamGrid source="/api/streams" />
 					</Row>

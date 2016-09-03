@@ -1,8 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import $ from 'jquery'
-import {Link} from 'react-router'
-import {Button, Col, Grid, Media, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
+import {Button, Col, Grid, OverlayTrigger, Row, Tooltip} from 'react-bootstrap'
 
 import Card from '../components/community/Card'
 import CardBlock from '../components/community/CardBlock'
@@ -48,22 +47,24 @@ var Levels = React.createClass({
 					<Row>
 						<Col md={9}>
 
-							<div className="pull-right">
-								<OverlayTrigger placement="top" overlay={
-									<Tooltip id="tooltip-randomize">Randomize</Tooltip>
-								}>
-									<Button bsStyle="default" disabled={this.state.loading} onClick={this.poll}><i className={classNames({"fa fa-refresh": true, "fa-spin": this.state.loading})}></i></Button>
-								</OverlayTrigger>
-							</div>
+							<h1 className="mikuia-page-header-text">
+								Random Channels
 
-							<h1 className="mikuia-page-header-text">Random Channels</h1>
+								<div className="pull-right">
+									<OverlayTrigger placement="top" overlay={
+										<Tooltip id="tooltip-randomize">Randomize</Tooltip>
+									}>
+										<Button bsStyle="default" disabled={this.state.loading} onClick={this.poll}><i className={classNames({"fa fa-refresh": true, "fa-spin": this.state.loading})}></i></Button>
+									</OverlayTrigger>
+								</div>
+							</h1>
 
 							<br />
 							<div className={classNames({"mikuia-loading": this.state.loading})}>
 								<For each="channel" of={this.state.channels}>
 									<Card key={channel.username}>
 										<CardBlock flexBasis={300}>
-											<CardBlockUser username={channel.username} />
+											<CardBlockUser username={channel.username} link={"/levels/" + channel.username} postfix=" Levels" />
 										</CardBlock>
 
 										<CardBlock flexBasis={125} alignRight title="Unique Viewers" value={channel.users.toString()} />

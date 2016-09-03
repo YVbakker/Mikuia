@@ -1,13 +1,22 @@
 import React from 'react'
-import {Link} from 'react-router'
 import {LinkContainer} from 'react-router-bootstrap'
-import {Button, Col, Grid, Media, Row} from 'react-bootstrap'
+import {Button, Col, Row} from 'react-bootstrap'
 
 var Home = React.createClass({
+
+	componentDidMount: function() {
+		this.props.setHeaderOption('extended', false)
+		this.props.setHeaderOption('splash', true)
+	},
+
+	componentWillUnmount: function() {
+		this.props.resetHeaderOptions()
+	},
 
 	render: function() {
 		return (
 			<div className="container text-white">
+				<br />
 				<div className="mikuia-index">
 					<Row>
 						<Col md={5} className="align-center mikuia-index-screenshot" />

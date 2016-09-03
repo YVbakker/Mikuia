@@ -1,21 +1,76 @@
-module.exports = (req, res) ->
-	await Mikuia.Streams.getAll defer err, allStreams
+module.exports =
 
-	streams = Mikuia.Tools.fillArray allStreams, 10
+	channel: (req, res) =>
+		if req.params.username?
+			Channel = new Mikuia.Models.Channel req.params.username
 
-	channels = []
+			await Channel.exists defer err, exists
+			if !err and exists
 
-	for stream in streams
+				levels = []
 
-		if stream?
-			await Mikuia.Database.zcard 'levels:' + stream + ':experience', defer err, userCount
 
-			channels.push
-				username: stream
-				users: userCount
 
-	res.json
-		channels: channels
+
+				limit = 100
+				offset = 0
+
+				if req.param 'limit'
+					limit = parseInt req.param 'limit'
+
+				if req.param 'offset'
+					offset = parseInt req.param 'offset'
+
+
+
+
+
+
+
+
+
+
+
+				await
+					Mikuia.Database.zcard 'levels:' + Channel.getName() + ':experience', defer err, total
+					Mikuia.Database.zrevrange 'levels:' + Channel.getName() + ':experience', offset, limit + offset - 1, 'withscores', defer err, levelData
+					
+
+				channels = Mikuia.Tools.chunkArray levelData, 2
+
+				for data in channels
+					if data.length > 0
+						levels.push
+							username: data[0]
+							experience: parseInt data[1]
+
+
+				res.json
+					total: total
+					users: levels
+			else
+				res.send 404
+		else
+			res.send 400
+
+	global: (req, res) =>
+		await Mikuia.Streams.getAll defer err, allStreams
+
+		streams = Mikuia.Tools.fillArray allStreams, 10
+
+		channels = []
+
+		for stream in streams
+
+			if stream?
+				await Mikuia.Database.zcard 'levels:' + stream + ':experience', defer err, userCount
+
+				channels.push
+					username: stream
+					users: userCount
+
+		res.json
+			channels: channels
 
 	# if req.params.userId?
 	# 	Channel = new Mikuia.Models.Channel req.params.userId

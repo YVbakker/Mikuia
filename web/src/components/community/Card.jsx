@@ -9,7 +9,7 @@ var Card = React.createClass({
 
 	render: function() {
 		return (
-			<div className="mikuia-card">
+			<div className={classNames({"mikuia-card": true, "mikuia-card-ranking": this.props.ranking})}>
 				{this.props.children}
 			</div>
 		)

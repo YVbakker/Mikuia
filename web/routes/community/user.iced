@@ -1,5 +1,5 @@
 module.exports = (req, res) ->
-	if req.params.username
+	if req.params.username?
 		Channel = new Mikuia.Models.Channel req.params.username
 
 		await Channel.exists defer err, exists
@@ -7,17 +7,35 @@ module.exports = (req, res) ->
 			res.send 404
 		else
 
-			user = {}
+			await Channel.getAll defer err, user
+			await Channel.getDisplayName defer err, user.displayName
+				# Channel.getLogo defer err, user.logo
+				# Channel.getProfileBanner defer err, user.profileBanner
 
-			await
-				Channel.getDisplayName defer err, user.displayName
-				Channel.getLogo defer err, user.logo
+			if !user.logo
+				user.logo = 'http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_300x300.png'
 
 			res.json
-				user: user
+				user:
+					displayName: user.displayName
+					logo: user.logo
+					profileBanner: user.profileBanner
+					bio: user.bio
+					level: parseInt user.level
+					experience: parseInt user.experience
 	else
-		res.send 404
+		if req.user
+			console.log req.user
 
+			res.json
+				auth: true
+				id: req.user.id
+				username: req.user.username
+				displayName: req.user.displayName
+				logo: req.user._json.logo
+		else
+			res.json
+				auth: false
 
 	# if not req.params.userId?
 	# 	res.render 'community/error',

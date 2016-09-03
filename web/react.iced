@@ -140,9 +140,9 @@ for routeName, routeDir of routeList
 # app.get '/dashboard/plugins', checkAuth, routes.dashboard.plugins.plugins
 # app.get '/dashboard/settings', checkAuth, routes.dashboard.settings.settings
 # app.get '/login', routes.login
-# app.get '/logout', (req, res) ->
-# 	req.logout()
-# 	res.redirect '/'
+app.get '/logout', (req, res) ->
+	req.logout()
+	res.redirect '/'
 
 # app.post '/dashboard/commands/add', checkAuth, routes.dashboard.commands.add
 # app.post '/dashboard/commands/remove', checkAuth, routes.dashboard.commands.remove
@@ -151,12 +151,17 @@ for routeName, routeDir of routeList
 # app.post '/dashboard/settings/save/:name', checkAuth, routes.dashboard.settings.save
 # app.post '/dashboard/settings/toggle', checkAuth, routes.dashboard.settings.toggle
 
-app.get '/api/levels', routes.community.levels
+app.get '/api/levels', routes.community.levels.global
+app.get '/api/levels/:username', routes.community.levels.channel
 
 app.get '/api/stream/:username', routes.community.stream
 app.get '/api/streams', routes.community.streams
 
+app.get '/api/user', routes.community.user
 app.get '/api/user/:username', routes.community.user
+app.get '/api/user/:username/commands', routes.community.userCommands
+app.get '/api/user/:username/levels', routes.community.userLevels
+app.get '/api/user/:username/levels/:channel', routes.community.userLevels
 
 # app.get '/', routes.community.index
 # app.get '/about', routes.community.about
@@ -181,50 +186,50 @@ app.get '/api/user/:username', routes.community.user
 # app.get '/user/:userId', routes.community.user
 # app.get '/user/:userId/:subpage', routes.community.user
 
-# app.get '/auth/twitch', passport.authenticate('twitchtv', { scope: [ 'user_read' ] })
-# app.get '/auth/twitch/callback', (req, res, next) =>
-# 	passport.authenticate('twitchtv', (err, user, info) ->
-# 		if err
-# 			return res.render 'community/error',
-# 				error: err
-# 		if !user
-# 			return res.redirect '/login'
-# 		req.logIn user, (err) =>
-# 			if err
-# 				return res.render 'community/error',
-# 					error: err
+app.get '/auth/twitch', passport.authenticate('twitchtv', { scope: [ 'user_read' ] })
+app.get '/auth/twitch/callback', (req, res, next) =>
+	passport.authenticate('twitchtv', (err, user, info) ->
+		if err
+			return res.render 'community/error',
+				error: err
+		if !user
+			return res.redirect '/login'
+		req.logIn user, (err) =>
+			if err
+				return res.render 'community/error',
+					error: err
 
-# 			Channel = new Mikuia.Models.Channel user.username
-# 			await
-# 				Channel.setDisplayName user._json.display_name, defer err, data
-# 				Channel.setBio user._json.bio, defer err, data
-# 				Channel.setEmail user.email, defer err, data
-# 				Channel.enablePlugin 'base', defer err, data
-# 				Channel.getInfo 'key', defer err, key
+			Channel = new Mikuia.Models.Channel user.username
+			await
+				Channel.setDisplayName user._json.display_name, defer err, data
+				Channel.setBio user._json.bio, defer err, data
+				Channel.setEmail user.email, defer err, data
+				Channel.enablePlugin 'base', defer err, data
+				Channel.getInfo 'key', defer err, key
 
-# 			if user._json.logo? && user._json.logo.indexOf('http') == 0
-# 				await Channel.setLogo user._json.logo, defer err, data
-# 			else
-# 				await Channel.setLogo 'http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png', defer err, data
+			if user._json.logo? && user._json.logo.indexOf('http') == 0
+				await Channel.setLogo user._json.logo, defer err, data
+			else
+				await Channel.setLogo 'http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png', defer err, data
 
-# 			if !key?
-# 				key = rstring
-# 					length: 20
-# 				await Channel.setInfo 'key', key
+			if !key?
+				key = rstring
+					length: 20
+				await Channel.setInfo 'key', key
 
-# 			if req.session.redirectTo?
-# 				res.redirect req.session.redirectTo
-# 			else
-# 				res.redirect '/'
+			if req.session.redirectTo?
+				res.redirect req.session.redirectTo
+			else
+				res.redirect '/'
 
-# 			await Channel.updateAvatar defer err, whatever
-# 	)(req, res, next)
+			await Channel.updateAvatar defer err, whatever
+	)(req, res, next)
 
 app.get '/app.js', (req, res) =>
 	if isProduction
 		res.sendFile __dirname + '/public/build/app.js'
 	else
-		res.redirect '//localhost:9090/public/build/app.js'
+		res.redirect '//dev.mikuia.tv:9090/public/build/app.js'
 
 app.get '/*', (req, res) =>
 	res.render 'index'
@@ -251,6 +256,6 @@ if !isProduction
 		hot: true
 		noInfo: true
 		historyApiFallback: true
-	.listen 9090, 'localhost', (err, result) =>
+	.listen 9090, 'dev.mikuia.tv', (err, result) =>
 		if err
 			console.log err
