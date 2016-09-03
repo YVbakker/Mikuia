@@ -5,8 +5,11 @@ import {Button, Col, Row} from 'react-bootstrap'
 var Home = React.createClass({
 
 	componentDidMount: function() {
-		this.props.setHeaderOption('extended', false)
-		this.props.setHeaderOption('splash', true)
+		var self = this
+		this.props.resetHeaderOptions(function() {
+			self.props.setHeaderOption('extended', false)
+			self.props.setHeaderOption('splash', true)
+		})
 	},
 
 	componentWillUnmount: function() {

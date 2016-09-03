@@ -28,12 +28,14 @@ var UserLevels = React.createClass({
 	},
 
 	componentDidMount: function() {
-		this.props.setHeaderOption('extended', true)
-		this.props.setHeaderOption('splash', false)
+		var self = this
+		this.props.resetHeaderOptions(function() {
+			self.props.setHeaderOption('extended', true)
+			self.props.setHeaderOption('splash', false)
+		})
 
 		this.poll()
 
-		var self = this
 		$(window).scroll(function() {
 			if($('body').height() <= ($(window).height() + $(window).scrollTop())) {
 				if(!self.state.loading) {
