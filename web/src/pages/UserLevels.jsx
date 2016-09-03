@@ -8,6 +8,8 @@ import CardBlock from '../components/community/CardBlock'
 import CardBlockSource from '../components/community/CardBlockSource'
 import CardBlockUser from '../components/community/CardBlockUser'
 
+import ErrorPage from '../components/community/ErrorPage'
+
 import Tools from '../tools'
 
 var UserLevels = React.createClass({
@@ -107,6 +109,7 @@ var UserLevels = React.createClass({
 			self.props.setHeaderOption('background', data.user.profileBanner)
 
 		}).fail(function() {
+			self.props.setHeaderOption('error', true)
 			self.setState({
 				error: true,
 				user: {}
@@ -119,37 +122,54 @@ var UserLevels = React.createClass({
 	render: function() {
 		return (
 			<Grid>
-				<div className="mikuia-page-padding">
-					<Row>
-						<Col md={8}>
-							<h1 className="mikuia-page-header-text text-white">{this.state.user.displayName}'s Levels</h1>
-						</Col>
-					</Row>
+				<Choose>
+					<When condition={!this.state.error}>
+						<div className="mikuia-page-padding">
+							<Row>
+								<Col md={8}>
+									<h1 className="mikuia-page-header-text text-white">{this.state.user.displayName}'s Levels</h1>
+								</Col>
+							</Row>
 
-					<Row>
-						<Col md={8} className="mikuia-page-card">
-							<For each="user" index="i" of={this.state.shownLevels}>
-								<Card ranking key={user.username}>
-									<CardBlock flexBasis={250}>
-										<CardBlockUser username={user.username} link={"/levels/" + user.username} postfix=" Level" />
-									</CardBlock>
+							<Row>
+								<Col md={8} className="mikuia-page-card">
+									<For each="user" index="i" of={this.state.shownLevels}>
+										<Card ranking key={user.username}>
+											<CardBlock flexBasis={250}>
+												<CardBlockUser username={user.username} link={"/levels/" + user.username} postfix=" Level" />
+											</CardBlock>
 
-									<CardBlock flexBasis={150} alignRight title="Experience" value={Tools.commas(user.experience)} />
-									<CardBlockSource flexBasis={150} alignRight title="Rank" url={"/api/user/" + this.props.params.username + "/levels/" + user.username} value="rank" prefix="#" link={"/levels/" + user.username}/>
-									<CardBlock flexBasis={70} alignRight title="Level" value={Tools.getLevel(user.experience).toString()} />
-									<CardBlock flexBasis={100} alignRight title="Progress" value={Tools.getLevelProgress(user.experience) + "%"} />
-								</Card>
-							</For>
-							<If condition={this.state.loading}>
-								<Card>
-									<CardBlock flexBasis={20}>
-										<i className="fa fa-spinner fa-spin" />
-									</CardBlock>
-								</Card>
-							</If>
-						</Col>
-					</Row>
-				</div>
+											<CardBlock flexBasis={150} alignRight title="Experience" value={Tools.commas(user.experience)} />
+											<CardBlockSource flexBasis={150} alignRight title="Rank" url={"/api/user/" + this.props.params.username + "/levels/" + user.username} value="rank" prefix="#" link={"/levels/" + user.username}/>
+											<CardBlock flexBasis={70} alignRight title="Level" value={Tools.getLevel(user.experience).toString()} />
+											<CardBlock flexBasis={100} alignRight title="Progress" value={Tools.getLevelProgress(user.experience) + "%"} />
+										</Card>
+									</For>
+									<If condition={this.state.loading}>
+										<Card>
+											<CardBlock flexBasis={20}>
+												<i className="fa fa-spinner fa-spin" />
+											</CardBlock>
+										</Card>
+									</If>
+								</Col>
+							</Row>
+						</div>
+					</When>
+					<Otherwise>
+						<ErrorPage>
+							<h3>That user does not exist.</h3>
+							<br />
+							<p>
+								Can't check the levels of a person that does not exist!
+								<br />
+								You can try creating a person and then try again.
+								<br />
+								Please be careful.
+							</p>
+						</ErrorPage>
+					</Otherwise>
+				</Choose>
 			</Grid>
 		)
 	}
