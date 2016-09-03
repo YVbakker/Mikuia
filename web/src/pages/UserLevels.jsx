@@ -7,7 +7,7 @@ import Card from '../components/community/Card'
 import CardBlock from '../components/community/CardBlock'
 import CardBlockSource from '../components/community/CardBlockSource'
 import CardBlockUser from '../components/community/CardBlockUser'
-
+import LevelCircle from '../components/community/LevelCircle'
 import ErrorPage from '../components/community/ErrorPage'
 
 import Tools from '../tools'
@@ -141,7 +141,9 @@ var UserLevels = React.createClass({
 
 											<CardBlock flexBasis={150} alignRight title="Experience" value={Tools.commas(user.experience)} />
 											<CardBlockSource flexBasis={150} alignRight title="Rank" url={"/api/user/" + this.props.params.username + "/levels/" + user.username} value="rank" prefix="#" link={"/levels/" + user.username}/>
-											<CardBlock flexBasis={70} alignRight title="Level" value={Tools.getLevel(user.experience).toString()} />
+											<CardBlock flexBasis={70} alignRight title="Level">
+												<LevelCircle experience={user.experience} />
+											</CardBlock>
 											<CardBlock flexBasis={100} alignRight title="Progress" value={Tools.getLevelProgress(user.experience) + "%"} />
 										</Card>
 									</For>
