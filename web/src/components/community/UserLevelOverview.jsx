@@ -40,7 +40,7 @@ var UserLevelOverview = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<If condition={!this.state.loading}>
+				<If condition={!this.state.loading && this.state.levels.length > 0}>
 					<LinkContainer to={"/user/" + this.props.username + "/levels"}>
 						<a>
 							<i className="fa fa-star"></i>&nbsp; {Tools.commas(this.state.levels.length)} channels watched
