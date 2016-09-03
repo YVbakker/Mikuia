@@ -44,9 +44,12 @@ var ChannelLevelOverview = React.createClass({
 			<div>
 				<If condition={!this.state.loading && this.state.total > 0}>
 					<LinkContainer to={"/levels/" + this.props.username}>
-						<a>
-							<i className="fa fa-user"></i>&nbsp; {Tools.commas(this.state.total)} unique viewers
-						</a>
+						<span>
+							<i className="fa fa-user"></i>&nbsp; 
+							<a>
+								{Tools.commas(this.state.total)} unique viewers
+							</a>
+						</span>
 					</LinkContainer>
 
 					<br />
