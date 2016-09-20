@@ -10,7 +10,7 @@
   "scripts": {
     "test": "mocha --compilers iced:iced-coffee-script/register"
   },
-  "homepage": "http://mikuia.tv",
+  "homepage": "https://github.com/Mikuia/Mikuia",
   "dependencies": {
     "body-parser": "^1.12.2",
     "cli-color": "^1.0.0",
